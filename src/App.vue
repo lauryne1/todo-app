@@ -1,45 +1,57 @@
-<script setup>
-  const liste = ["Achat", "Retrait", " Solde"];
-</script>
 <template>
-  <div class="mx-44 w-[800px] h-[450px] justify-center bg-slate-400">
-    <h1 class="text-center text-2xl text-white py-10">ToDo List Application</h1>
-    <div class="flex w-[80%] rounded-md bg-white my-4 m-auto">
-      <input
-        class="flex flex-1 py-2 px-2 rounded text-slate-600"
-        placeholder="Add Todo..." />
-      <button
-        class="flex flex-2 w-[80px] justify-center items-center text-white bg-slate-600 cursor-pointer">
-        Add to list
-      </button>
-    </div>
-    <div class="flex flex-col space-y-6">
-      <div class="flex w-[80%] bg-slate-600 m-auto mt-4 justify-between">
-        <p class="px-6 py-2 text-white">To Do Item</p>
+  <div class="mx-auto w-full h-screen justify-center bg-[#F3F3F3]">
+    <h1 class="text-center text-2xl text-black py-10">
+      ~ ToDo List Application ~
+    </h1>
+    <div class="flex flex-col w-full max-w-sm mx-auto my-4">
+      <div class="relative flex items-center w-full">
+        <input
+          v-model="newItem"
+          class="w-full py-2 px-2 rounded text-slate-600"
+          placeholder="Add Todo..." />
         <button
-          class="text-white border border-white px-2 h-7 mx-4 self-center cursor-pointer">
-          remove
+          class="absolute right-0 h-full px-4 py-2 rounded text-white bg-[#7999fd] cursor-pointer"
+          @click="addNewItem">
+          Add
         </button>
       </div>
-      <div class="flex w-[80%] bg-slate-600 m-auto justify-between">
-        <p class="px-6 py-2 text-white">To Do Item</p>
-        <button
-          class="text-white border border-white px-2 h-7 mx-4 self-center cursor-pointer">
-          remove
-        </button>
-      </div>
-      <div class="flex w-[80%] bg-slate-600 m-auto justify-between">
-        <p class="px-6 py-2 text-white">To Do Item</p>
-        <button
-          class="text-white border border-white px-2 h-7 self-center mx-4 cursor-pointer">
-          remove
-        </button>
+      <div class="flex flex-col space-y-4">
+        <div
+          v-for="item in itemList"
+          :key="item.id"
+          class="flex items-center justify-between w-full bg-[#7999fd] rounded-lg px-4 py-2">
+          <p class="text-white">{{ item.value }}</p>
+          <button
+            class="text-white rounded border border-white px-2 h-7 self-center cursor-pointer"
+            @click="removeItem(item)">
+            Remove
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <!-- <div class="flex w-[600px] bg-black">1234567</div> -->
 </template>
-<style>
-  @import "./style.css";
-</style>
+
+<script setup>
+  import { ref } from "vue";
+
+  const itemList = ref([
+    { id: 0, value: "Buy milk" },
+    { id: 1, value: "Go for a run" },
+    { id: 2, value: "Complete project" },
+  ]);
+
+  const newItem = ref("");
+
+  function addNewItem() {
+    if (newItem.value.trim() !== "") {
+      itemList.value.push({ id: itemList.value.length, value: newItem.value });
+      newItem.value = "";
+    }
+  }
+
+  function removeItem(item) {
+    itemList.value = itemList.value.filter((i) => i.id !== item.id);
+  }
+</script>
 
